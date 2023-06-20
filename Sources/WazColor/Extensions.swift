@@ -274,18 +274,24 @@ public extension Color {
     /// - Returns: Color with brightness
     ///
     func brightnessAdjust(to targetBrightness: CGFloat) -> Color {
-            let hsbColor = UIColor(self).hsbaComponents
-            
-            var adjustedHSB = hsbColor
-            adjustedHSB.brightness = targetBrightness * (1.0 - hsbColor.brightness) + hsbColor.brightness
-            
-            let adjustedUIColor = UIColor(hue: adjustedHSB.hue,
-                                          saturation: adjustedHSB.saturation,
-                                          brightness: adjustedHSB.brightness,
-                                          alpha: adjustedHSB.alpha)
-            
-            return Color(adjustedUIColor)
+        var hue: CGFloat = 0.0
+        var saturation: CGFloat = 0.0
+        var brightness: CGFloat = 0.0
+        var alpha: CGFloat = 0.0
+        
+        guard UIColor(self).getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) else {
+            return self
         }
+        
+        let adjustedBrightness = targetBrightness * (1.0 - brightness) + brightness
+        
+        let adjustedUIColor = UIColor(hue: hue,
+                                      saturation: saturation,
+                                      brightness: adjustedBrightness,
+                                      alpha: alpha)
+        
+        return Color(adjustedUIColor)
+    }
     
     /// Converts to UIColor from the hex
     ///
