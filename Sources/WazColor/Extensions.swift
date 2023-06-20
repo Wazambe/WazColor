@@ -274,7 +274,7 @@ public extension Color {
     /// - Returns: Color with brightness
     ///
 
-    func brightnessAdjust(to targetBrightness: CGFloat) -> Color {
+    func brightnessLighter(to targetBrightness: CGFloat) -> Color {
         let cgColor = self.cgColor
         
         guard let colorSpace = cgColor?.colorSpace else {
@@ -302,61 +302,22 @@ public extension Color {
         return adjustedColor
     }
     
-    func brightnessLighter(to targetBrightness: CGFloat) -> Color {
-        let cgColor = self.cgColor
+    func brightnessDarker(to targetBrightness: CGFloat) -> Color {
+        let hsbColor = UIColor(self).hsbaComponents
         
-        guard let colorSpace = cgColor?.colorSpace else {
-            return self
-        }
+        var adjustedHSB = hsbColor
+        adjustedHSB.brightness = targetBrightness
         
-        guard colorSpace.model == .rgb else {
-            return self
-        }
+        let adjustedUIColor = UIColor(hue: adjustedHSB.hue,
+                                      saturation: adjustedHSB.saturation,
+                                      brightness: adjustedHSB.brightness,
+                                      alpha: adjustedHSB.alpha)
         
-        let components = cgColor?.components
-        
-        guard let originalComponents = components else {
-            return self
-        }
-        
-        var adjustedComponents = originalComponents
-        
-        let brightnessIndex = colorSpace.numberOfComponents - 1
-        adjustedComponents[brightnessIndex] = targetBrightness * originalComponents[brightnessIndex]
-        
-        let adjustedCGColor = CGColor(colorSpace: colorSpace, components: adjustedComponents)
-        let adjustedColor = Color(adjustedCGColor!)
-        
-        return adjustedColor
+        return Color(adjustedUIColor)
     }
     
-    func brightnessDarker(to targetBrightness: CGFloat) -> Color {
-        let cgColor = self.cgColor
-        
-        guard let colorSpace = cgColor?.colorSpace else {
-            return self
-        }
-        
-        guard colorSpace.model == .rgb else {
-            return self
-        }
-        
-        let components = cgColor?.components
-        
-        guard let originalComponents = components else {
-            return self
-        }
-        
-        var adjustedComponents = originalComponents
-        
-        let brightnessIndex = colorSpace.numberOfComponents - 1
-        adjustedComponents[brightnessIndex] = originalComponents[brightnessIndex] - (originalComponents[brightnessIndex] * targetBrightness)
-        
-        let adjustedCGColor = CGColor(colorSpace: colorSpace, components: adjustedComponents)
-        let adjustedColor = Color(adjustedCGColor!)
-        
-        return adjustedColor
-    }
+    
+    
     
     
     /// Converts to UIColor from the hex
