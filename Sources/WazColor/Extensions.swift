@@ -294,7 +294,7 @@ public extension Color {
         var adjustedComponents = originalComponents
         
         let brightnessIndex = colorSpace.numberOfComponents - 1
-        adjustedComponents[brightnessIndex] = originalComponents[brightnessIndex] + (1 - originalComponents[brightnessIndex]) * targetBrightness
+        adjustedComponents[brightnessIndex] = targetBrightness
         
         let adjustedCGColor = CGColor(colorSpace: colorSpace, components: adjustedComponents)
         let adjustedColor = Color(adjustedCGColor!)
