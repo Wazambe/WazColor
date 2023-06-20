@@ -92,6 +92,28 @@ public extension UIColor {
     }
     
     
+    /// Beaks a UIColor down to Hue Saturation,  Brightness, and Alpha
+    ///
+    /// - Parameters:
+    ///   - Self:  UIColor
+    ///
+    /// - Returns: HSBA Values for a UIColor
+    /// - Note:
+    ///     Any additional comments
+    var hsbaComponents: (hue: CGFloat, saturation: CGFloat, brightness: CGFloat, alpha: CGFloat) {
+        var hue: CGFloat = 0.0
+        var saturation: CGFloat = 0.0
+        var brightness: CGFloat = 0.0
+        var alpha: CGFloat = 0.0
+        
+        guard getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) else {
+            return (hue: 0.0, saturation: 0.0, brightness: 0.0, alpha: 0.0)
+        }
+        
+        return (hue: hue, saturation: saturation, brightness: brightness, alpha: alpha)
+    }
+    
+    
     /// Adjusts the brightness of a color
     ///
     /// - Parameters:
@@ -252,14 +274,16 @@ public extension Color {
     /// - Returns: Color with brightness
     ///
     func brightnessAdjust(to targetBrightness: CGFloat) -> Color {
-        guard let hsbColor = UIColor(self).hsbaComponents else {
-            return self
-        }
-        
+         let hsbColor = UIColor(self).hsbaComponents
+ 
         var adjustedHSB = hsbColor
         adjustedHSB.brightness = targetBrightness
         
-        let adjustedUIColor = UIColor(hsba: adjustedHSB)
+        let adjustedUIColor = UIColor(hue: adjustedHSB.hue,
+                                      saturation: adjustedHSB.saturation,
+                                      brightness: adjustedHSB.brightness,
+                                      alpha: adjustedHSB.alpha)
+        
         return Color(adjustedUIColor)
     }
     
