@@ -232,6 +232,32 @@ public extension Color {
             return false
         }
     }
+ 
+    
+    /// Calculates the brightness ratio of a lolor
+    ///
+    /// - Parameters:
+    ///   - self: Color self
+    ///
+    /// - Returns: CGFloat
+    ///
+    var brightnessLevel: CGFloat {
+        let rgbColor = UIColor(self)
+        
+        var r: CGFloat = 0.0
+        var g: CGFloat = 0.0
+        var b: CGFloat = 0.0
+        var a: CGFloat = 0.0
+        var brightness: CGFloat = 0.0
+        
+        rgbColor.getRed(&r, green: &g, blue: &b, alpha: &a)
+
+        brightness = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+
+        return (brightness * 20).rounded() / 20
+    }
+    
+    
     
     
     /// Converts UIColors  and then adjusts the brightness
