@@ -28,9 +28,31 @@ You may need to import the included Asset catalogue folder 'Gradients' to make f
 
 
 
+Code Sample
+-----------
+
+import SwiftUI
+import WazColor
+
+struct GradientListView: View {
+    let gradient = Gradient()
+    private var twoColumnGrid = [ GridItem( .flexible() ), GridItem( .flexible() ) ]
+
+    public var body: some View {
+        GradientView()
+    }
+}
+
+struct GradientListView_Previews: PreviewProvider {
+    static var previews: some View {
+        GradientListView()
+    }
+}
 
 
+/Users/markrobberts/Development/WazColor/GradientsOnBlack.png
 
+/Users/markrobberts/Development/WazColor/GradientsOnWhite.png
 
 
 
