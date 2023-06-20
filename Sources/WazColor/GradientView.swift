@@ -10,13 +10,16 @@ import SwiftUI
 @available(macOS 13.0, *)
 @available(iOS 16.0, *)
 
-struct GradientView: View {
+public struct GradientView: View {
     
     let gradient = Gradient()
 
     @State private var gradients: [LinearGradient] = []
     
-    var body: some View {
+   public init() {
+    }
+    
+   public var body: some View {
         
         ZStack {
             
