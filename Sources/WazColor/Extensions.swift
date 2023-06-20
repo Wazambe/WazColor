@@ -273,7 +273,7 @@ public extension Color {
     ///
     /// - Returns: Color with brightness
     ///
-    func adjustedBrightness(to targetBrightness: CGFloat) -> Color {
+    func brightnessAdjust(to targetBrightness: CGFloat) -> Color {
         guard let rgbColor = UIColor(self).cgColor.components else {
             return self
         }
