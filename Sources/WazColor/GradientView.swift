@@ -1,8 +1,8 @@
 //
-//  SwiftUIView.swift
-//  
+//  GradientListView.swift
+//  GPT Tutor
 //
-//  Created by Mark Robberts on 2023/06/16.
+//  Created by Mark Robberts on 2023/06/20.
 //
 
 import SwiftUI
@@ -13,30 +13,28 @@ import SwiftUI
 public struct GradientView: View {
     
     let gradient = Gradient()
-
-    @State private var gradients: [LinearGradient] = []
+    
+    private var twoColumnGrid = [ GridItem( .flexible() ), GridItem( .flexible() ) ]
     
    public init() {
     }
     
-   public var body: some View {
+    public var body: some View {
         
-        ZStack {
-            
-            Rectangle()
-                .fill( Color(.systemGray) )
-                .ignoresSafeArea()
-            
-            VStack(spacing: 0){
-                ForEach ( Array(gradient.linears.enumerated() ), id:\.offset) { index, gradient in
-                    Rectangle().fill(gradient)
-                        .padding(4)
+        ScrollView {
+            LazyVGrid(columns: twoColumnGrid, alignment: .center, spacing: 12)  {
+                ForEach(Array( gradient.linears.enumerated()), id: \.offset) { index, grad in
+                    VStack {
+                        Rectangle()
+                            .fill( grad )
+                            .aspectRatio(2.75, contentMode: .fit)
+                    }
                 }
             }
         }
     }
-
 }
+
 
 @available(macOS 13.0, *)
 @available(iOS 16.0, *)
