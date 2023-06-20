@@ -274,7 +274,6 @@ public extension Color {
     /// - Returns: Color with brightness
     ///
     func brightnessAdjust(to targetBrightness: CGFloat) -> Color {
-        func brightnessAdjust(to targetBrightness: CGFloat) -> Color {
             let hsbColor = UIColor(self).hsbaComponents
             
             var adjustedHSB = hsbColor
