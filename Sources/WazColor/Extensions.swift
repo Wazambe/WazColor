@@ -273,7 +273,7 @@ public extension Color {
     ///
     /// - Returns: Color with brightness
     ///
-    func brightnessAdjust(to targetBrightness: CGFloat) -> Color {
+    func brightnessLighter(to targetBrightness: CGFloat) -> Color {
         let cgColor = self.cgColor
         
         guard let colorSpace = cgColor?.colorSpace else {
@@ -293,13 +293,42 @@ public extension Color {
         var adjustedComponents = originalComponents
         
         let brightnessIndex = colorSpace.numberOfComponents - 1
-        adjustedComponents[brightnessIndex] = targetBrightness
+        adjustedComponents[brightnessIndex] = targetBrightness * originalComponents[brightnessIndex]
         
         let adjustedCGColor = CGColor(colorSpace: colorSpace, components: adjustedComponents)
         let adjustedColor = Color(adjustedCGColor!)
         
         return adjustedColor
     }
+    
+    func brightnessDarker(to targetBrightness: CGFloat) -> Color {
+        let cgColor = self.cgColor
+        
+        guard let colorSpace = cgColor?.colorSpace else {
+            return self
+        }
+        
+        guard colorSpace.model == .rgb else {
+            return self
+        }
+        
+        let components = cgColor?.components
+        
+        guard let originalComponents = components else {
+            return self
+        }
+        
+        var adjustedComponents = originalComponents
+        
+        let brightnessIndex = colorSpace.numberOfComponents - 1
+        adjustedComponents[brightnessIndex] = originalComponents[brightnessIndex] - (originalComponents[brightnessIndex] * targetBrightness)
+        
+        let adjustedCGColor = CGColor(colorSpace: colorSpace, components: adjustedComponents)
+        let adjustedColor = Color(adjustedCGColor!)
+        
+        return adjustedColor
+    }
+    
     
     /// Converts to UIColor from the hex
     ///
