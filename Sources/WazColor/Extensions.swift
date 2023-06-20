@@ -273,7 +273,25 @@ public extension Color {
     ///
     /// - Returns: Color with brightness
     ///
-
+    func adjustedBrightness(to targetBrightness: CGFloat) -> Color {
+        guard let rgbColor = UIColor(self).cgColor.components else {
+            return self
+        }
+        
+        let currentBrightness = (rgbColor[0] * 299 + rgbColor[1] * 587 + rgbColor[2] * 114) / 1000
+        let brightnessDifference = targetBrightness - currentBrightness
+        
+        let adjustedComponents = rgbColor.map { component in
+            max(0.0, min(1.0, component + brightnessDifference))
+        }
+        
+        return Color(red: Double(adjustedComponents[0]),
+                     green: Double(adjustedComponents[1]),
+                     blue: Double(adjustedComponents[2]),
+                     opacity: Double(rgbColor[3]))
+    }
+    
+    
     func brightnessLighter(to targetBrightness: CGFloat) -> Color {
         let cgColor = self.cgColor
         
