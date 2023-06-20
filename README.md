@@ -26,6 +26,8 @@ ASSETS
 
 You may need to import the included Asset catalogue folder 'Gradients' to make finer adjustments.
 
+<img width="383" alt="GradientsOnWhite" src="https://github.com/Wazambe/WazColor/assets/58177409/702feba5-2bab-40fa-83dc-a01a7df7c236">
+<img width="383" alt="GradientsOnBlack" src="https://github.com/Wazambe/WazColor/assets/58177409/8d1c730f-b5af-4360-9db9-23fa2b135ce2">
 
 
 Code Sample
@@ -48,11 +50,6 @@ struct GradientListView_Previews: PreviewProvider {
         GradientListView()
     }
 }
-
-
-/Users/markrobberts/Development/WazColor/GradientsOnBlack.png
-
-/Users/markrobberts/Development/WazColor/GradientsOnWhite.png
 
 
 
