@@ -213,24 +213,8 @@ public extension Color {
     /// - Returns: Boolean true if it is dark
     ///
     var isDarkerColor: Bool {
-        let rgbColor = UIColor(self)
-        
-        var r: CGFloat = 0.0
-        var g: CGFloat = 0.0
-        var b: CGFloat = 0.0
-        var a: CGFloat = 0.0
-        var brightness: CGFloat = 0.0
-        
-        rgbColor.getRed(&r, green: &g, blue: &b, alpha: &a)
-        
-        // algorithm from: http://www.w3.org/WAI/ER/WD-AERT/#color-contrast
-        brightness = ((r * 299) + (g * 587) + (b * 114)) / 1000;
-        if (brightness < 0.5) {
-            return true
-        }
-        else {
-            return false
-        }
+        if (self.brightnessLevel < 0.5) {  return true  }
+        else { return false }
     }
  
     
@@ -267,10 +251,22 @@ public extension Color {
     ///
     /// - Returns: Color with brightness
     ///
-    func withBrightness(_ brightness: CGFloat) -> Color {
-        let rgbColor = UIColor(self)
+    func brightnessAdjust(to targetBrightness: CGFloat) -> Color {
+        guard let rgbColor = UIColor(self).cgColor.components else {
+            return self
+        }
         
-        return Color(uiColor: rgbColor.adjustBrightness(brightness) )
+        let currentBrightness = (rgbColor[0] * 299 + rgbColor[1] * 587 + rgbColor[2] * 114) / 1000
+        let brightnessDifference = targetBrightness - currentBrightness
+        
+        let adjustedComponents = rgbColor.map { component in
+            max(0.0, min(1.0, component + brightnessDifference))
+        }
+        
+        return Color(red: Double(adjustedComponents[0]),
+                     green: Double(adjustedComponents[1]),
+                     blue: Double(adjustedComponents[2]),
+                     opacity: Double(rgbColor[3]))
     }
     
     /// Converts to UIColor from the hex
