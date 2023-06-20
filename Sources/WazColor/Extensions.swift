@@ -252,21 +252,15 @@ public extension Color {
     /// - Returns: Color with brightness
     ///
     func brightnessAdjust(to targetBrightness: CGFloat) -> Color {
-        guard let rgbColor = UIColor(self).cgColor.components else {
+        guard let hsbColor = UIColor(self).hsbaComponents else {
             return self
         }
         
-        let currentBrightness = (rgbColor[0] * 299 + rgbColor[1] * 587 + rgbColor[2] * 114) / 1000
-        let brightnessDifference = targetBrightness - currentBrightness
+        var adjustedHSB = hsbColor
+        adjustedHSB.brightness = targetBrightness
         
-        let adjustedComponents = rgbColor.map { component in
-            max(0.0, min(1.0, component + brightnessDifference))
-        }
-        
-        return Color(red: Double(adjustedComponents[0]),
-                     green: Double(adjustedComponents[1]),
-                     blue: Double(adjustedComponents[2]),
-                     opacity: Double(rgbColor[3]))
+        let adjustedUIColor = UIColor(hsba: adjustedHSB)
+        return Color(adjustedUIColor)
     }
     
     /// Converts to UIColor from the hex
