@@ -273,7 +273,20 @@ public extension Color {
     ///
     /// - Returns: Color with brightness
     ///
-    func brightnessAdjust(to targetBrightness: CGFloat) -> Color {
+
+    func adjustUiBrightness(_ brightness: CGFloat) -> Color {
+        return Color(UIColor(self).adjustBrightness(brightness))
+    }
+    
+    
+    /// Converts UIColors  and then adjusts the brightness
+    ///
+    /// - Parameters:
+    ///   - Self:
+    ///
+    /// - Returns: Color with brightness
+    ///
+    func brightnessColorAdjust(to targetBrightness: CGFloat) -> Color {
         guard let rgbColor = UIColor(self).cgColor.components else {
             return self
         }
@@ -292,46 +305,14 @@ public extension Color {
     }
     
     
-    func brightnessLighter(to targetBrightness: CGFloat) -> Color {
-        let cgColor = self.cgColor
-        
-        guard let colorSpace = cgColor?.colorSpace else {
-            return self
-        }
-        
-        guard colorSpace.model == .rgb else {
-            return self
-        }
-        
-        let components = cgColor?.components
-        
-        guard let originalComponents = components else {
-            return self
-        }
-        
-        var adjustedComponents = originalComponents
-        
-        let brightnessIndex = colorSpace.numberOfComponents - 1
-        adjustedComponents[brightnessIndex] = targetBrightness
-        
-        let adjustedCGColor = CGColor(colorSpace: colorSpace, components: adjustedComponents)
-        let adjustedColor = Color(adjustedCGColor!)
-        
-        return adjustedColor
-    }
     
-    func brightnessDarker(to targetBrightness: CGFloat) -> Color {
-        let hsbColor = UIColor(self).hsbaComponents
+    func approximatedColorAdjustment(_ targetBrightness: CGFloat) -> Color {
+    let ownBrightness = self.brightnessLevel
         
-        var adjustedHSB = hsbColor
-        adjustedHSB.brightness = targetBrightness
+        let oddTargetAdjustmentValue: CGFloat  = ( ( (1.1+ownBrightness/2)-( 0.5+ownBrightness/2 ) )*targetBrightness ) + ( ( (0.5*targetBrightness)+(ownBrightness/2)+0.05*(1-targetBrightness) ) + (((ownBrightness*targetBrightness+(-ownBrightness)) ) ) )
         
-        let adjustedUIColor = UIColor(hue: adjustedHSB.hue,
-                                      saturation: adjustedHSB.saturation,
-                                      brightness: adjustedHSB.brightness,
-                                      alpha: adjustedHSB.alpha)
-        
-        return Color(adjustedUIColor)
+        return  self.adjustUiBrightness(oddTargetAdjustmentValue)
+
     }
     
     
