@@ -311,7 +311,7 @@ public extension Color {
         
         let oddTargetAdjustmentValue: CGFloat  = ( ( (1.1+ownBrightness/2)-( 0.5+ownBrightness/2 ) )*targetBrightness ) + ( ( (0.5*targetBrightness)+(ownBrightness/2)+0.05*(1-targetBrightness) ) + (((ownBrightness*targetBrightness+(-ownBrightness)) ) ) )
         
-        return  self.adjustUiBrightness(oddTargetAdjustmentValue)
+        return  self.brightnessColorAdjust(to: oddTargetAdjustmentValue)
 
     }
     
